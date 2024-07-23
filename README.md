@@ -8,11 +8,10 @@ Welcome to the Beer Store E-commerce Website repository! This project is a full-
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
+- [DataBase](#database)
 - [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
+
+
 
 ## Project Overview
 
@@ -43,7 +42,7 @@ Make sure you have the following installed on your machine:
 - Angular CLI
 - MongoDB Atlas account
 
-### Beer Table
+### Basic Database Schema for Beer Table
 
 | Column Name     | Data Type     | Constraints           | Description                          |
 |-----------------|---------------|-----------------------|--------------------------------------|
@@ -58,7 +57,7 @@ Make sure you have the following installed on your machine:
 | created_at      | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP | Timestamp when the record was created |
 | updated_at      | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | Timestamp when the record was last updated |
 
-### User Table
+### Basic Database Schema for User Table
 
 | Column Name | Data Type     | Constraints           | Description                          |
 |-------------|---------------|-----------------------|--------------------------------------|
