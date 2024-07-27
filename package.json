@@ -1,0 +1,18 @@
+{
+  "name": "beerstorefinal",
+  "version": "1.0.0",
+  "description": "Welcome to the Beer Store E-commerce Website repository! This project is a full-stack web application built using NodeJS for the backend, Angular for the frontend, and MongoDB (Atlas) for the database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
+  }
+}

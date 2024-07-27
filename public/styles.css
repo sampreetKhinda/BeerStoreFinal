@@ -1,0 +1,98 @@
+* {
+    box-sizing: border-box;
+  }
+  header {
+    background-color: #5C0029;
+    padding: 30px;
+    font-size: 18px;
+    color: white;
+  }
+  header p{
+    margin-left: 10px;
+  }
+  header img {
+    float: left;
+    margin-right: 20px;
+  }
+  
+main {
+  float: left;
+  padding: 0px 12px;
+  width: 80%;
+  height: 1000px;
+  padding-left: 5%;
+  background-color: #A4B8C4;
+  color: white;
+}
+.clear{
+    clear: both;
+ }
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+aside{
+  background-color: #857C8D;
+  width: 20%;
+  padding: 10px 2%;
+  height: 1000px;
+  float: right;
+  color: white;
+}
+
+footer {
+  background-color: #5C0029;
+  padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+footer p{
+    color: white;   
+}
+
+/* Card styles */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 1rem;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .card h1 {
+    vertical-align:middle
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #218838;
+  }
+
+input[type="text"],
+input[type="email"],
+textarea {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
