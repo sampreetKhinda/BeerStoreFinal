@@ -1,9 +1,25 @@
-<%- include('layout', { title: title, body: `
-    <div id="CountryInfo" >
-      <h1>About Me</h1>
-      <p>My name is Sampreet Singh. I am studying Mobile Solution development at Conestoga college. You can contact me at sampreetsingh3607@conestogac.on.ca </p>
-      <h2>The country Where I born and brought up</h2>
-       
-    </div>
-  ` }) %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Beer Store</title>
+        <link rel="stylesheet" href="/styles.css">
+         <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        
+      </head>
+      <body>
+    <%- include('header') %>
+    <main>
+      <div class="text-black" >
+        <h1>About Me</h1>
+        <p>My name is Sampreet Singh. I am studying Mobile Solution development at Conestoga college.</p>
+        <p>You can contact me at sampreetsingh3607@conestogac.on.ca </p>
+        <p>More Links:</p>
+        <p><a title="LinkedIn" target="_blank" href="https://www.linkedin.com/in/sampreet-singh-71a46731/">LinkedIn</a></p>
+        <p><a title="Github" target="_blank" href="https://github.com/sampreetKhinda">Github</a></p>
+      </div>
+    </main>
+<%- include('footer') %>
+</body>
+</html>
   

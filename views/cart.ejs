@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('header') %>
+  <main class="container mt-5">
+    <h1>Your Cart</h1>
+    <% if (cart.length === 0) { %>
+      <p class="text-black">Your cart is empty.</p>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% cart.forEach(item => { %>
+              <tr>
+                <td><img src="<%= item.image %>" alt="<%= item.name %>" class="img-thumbnail" width="100"></td>
+                <td><%= item.name %></td>
+                <td>$<%= item.price.toFixed(2) %></td>
+                <td>
+                  <form action="/cart/update/<%= item._id %>" method="post" class="form-inline">
+                    <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="form-control mr-2">
+                    <button type="submit" class="btn btn-success">Update</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/cart/remove/<%= item._id %>" method="post">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </main>
+  <%- include('footer') %>
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

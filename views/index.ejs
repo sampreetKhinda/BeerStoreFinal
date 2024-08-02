@@ -1,14 +1,63 @@
-<%- include('layout', { title: title, body: `
-    <div id="PersonalInfo" >
-        <h2>Personal Information</h2>
-        <p>Hi, My name is Sampreet Singh. I am from Punjab, India. I love to ride Motorcycle, watching movies, travel to
-            new desinations, try different cousine and cooking.
-            I speak English, Punjabi, Hindi languages. I have a long list of things to do in my life some of them
-            are:</p>
-        <ol>
-            <li> I want to go on a world tour.</li>
-            <li> I want to visit every ammusment park in the world.</li>
-        </ol>
-    </div>
-   
-` }) %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beer Store</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('header') %>
+
+    <main class="container">
+        <!-- Type Filter -->
+        <form action="/" method="get" class="mb-4">
+            <div class="form-group">
+                <label for="type" class="text-black">Filter by Category:</label>
+                <select id="type" name="type" class="form-control" onchange="this.form.submit()">
+                    <option value="">All Types</option>
+                    <% types.forEach(t => { %>
+                        <option value="<%= t %>" <%= selectedType === t ? 'selected' : '' %>><%= t %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </form>
+
+        <div class="row justify-content-center">
+            <% beers.forEach(beer => { %>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card h-100">
+                        <img src="<%= beer.image %>" class="card-img-top" alt="<%= beer.name %>">
+                        <div class="card-body text-black">
+                            <h5 class="card-title"><b><%= beer.name %></b></h5>
+                            <p class="card-text"><b>Brand:</b> <%= beer.brand %></p>
+                            <p class="card-text"><b>Category:</b> <%= beer.type %></p>
+                            <p class="card-text"><b>Alcohol Content:</b> <%= beer.alcoholContent %>%</p>
+                            <p class="card-text"><b>Price:</b> $<%= beer.price.toFixed(2) %></p>
+                            <p class="card-text"><b>Description:</b> <%= beer.description %></p>
+                            <button class="view-details-btn" onclick="viewDetails('<%= beer._id %>')">View Details</button>
+                            <form action="/cart/add/<%= beer._id %>" method="post" class="mt-3">
+                                <button class="add-to-cart-btn" type="submit">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+    <%- include('footer') %>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function viewDetails(beerId) {
+            window.location.href = `/${beerId}`;
+        }
+    </script>
+</body>
+</html>

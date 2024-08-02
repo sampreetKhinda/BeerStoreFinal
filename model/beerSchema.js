@@ -32,10 +32,19 @@ const beerSchema = new Schema({
     type: String,
     trim: true,
   },
+  image : {
+    type: String,
+    trim: true,
+  },
   inStock: {
     type: Boolean,
     default: true,
   },
+  quantity:{
+    type: Number,
+    required: true,
+    min: 0,
+  }
 });
 
 // Middleware to update the updated_at field on save

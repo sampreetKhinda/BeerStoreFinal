@@ -1,12 +1,25 @@
-<%- include('layout', { title: title, body: `
-    <div class="card">
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Beer Store</title>
+        <link rel="stylesheet" href="/styles.css">
+         <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+      </head>
+      <body>
+        <%- include('header') %>
+        <main>
+      <div class="card">
       <h1>Contact Us</h1>
       <form action="/send-message" method="POST">
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
         <textarea name="message" placeholder="Your Message" required></textarea>
-        <input type="submit" value="Send Message">
+        <button class="add-to-cart-btn" type="submit" value="Send Message">Send Message</button>
       </form>
-    </div>
-  ` }) %>
-    
+      </div>
+    </main>
+  <%- include('footer') %>
+  </body>
+</html>
