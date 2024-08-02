@@ -37,10 +37,15 @@ The Beer Store E-commerce Website is designed to provide users with a seamless o
 
 Make sure you have the following installed on your machine:
 
-- NodeJS
+- NodeJS, express
 - npm (Node Package Manager)
 - Angular CLI
 - MongoDB Atlas account
+
+### Project setup
+1. ```bash
+    npm install express mongoose body-parser express-session ejs
+    ```
 
 ### Basic Database Schema for Beer Table
 
