@@ -28,8 +28,8 @@ The Beer Store E-commerce Website is designed to provide users with a seamless o
 
 ## Technologies Used
 
-- **Frontend:** Angular
-- **Backend:** NodeJS, Express
+- **Frontend:** Express, ejs
+- **Backend:** NodeJS
 - **Database:** MongoDB (Atlas)
 - **Styling:** Bootstrap, CSS
 
@@ -37,9 +37,9 @@ The Beer Store E-commerce Website is designed to provide users with a seamless o
 
 Make sure you have the following installed on your machine:
 
-- NodeJS, express
+- NodeJS
 - npm (Node Package Manager)
-- Angular CLI
+- express
 - MongoDB Atlas account
 
 ### Project setup
@@ -51,16 +51,16 @@ Make sure you have the following installed on your machine:
 
 | Column Name     | Data Type     | Constraints           | Description                          |
 |-----------------|---------------|-----------------------|--------------------------------------|
-| id              | INT           | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each beer      |
+| id              | INT           | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each beer|
 | name            | VARCHAR(255)  | NOT NULL              | Name of the beer                     |
 | brand           | VARCHAR(255)  | NOT NULL              | Brand or brewery of the beer         |
 | type            | VARCHAR(50)   | NOT NULL              | Type of beer (Lager, Ale, etc.)      |
-| alcohol_content | DECIMAL(4,2)  | NOT NULL, CHECK (alcohol_content >= 0) | Alcohol by Volume (ABV) percentage  |
-| price           | DECIMAL(10,2) | NOT NULL, CHECK (price >= 0) | Price of the beer                |
+| alcohol_content | DECIMAL(4,2)  | NOT NULL              | Alcohol by Volume (ABV) percentage   |
+| price           | DECIMAL(10,2) | NOT NULL              | Price of the beer                    |
 | description     | TEXT          |                       | Description of the beer              |
 | in_stock        | BOOLEAN       | DEFAULT TRUE          | Whether the beer is in stock         |
-| created_at      | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP | Timestamp when the record was created |
-| updated_at      | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | Timestamp when the record was last updated |
+| image           | VARCHAR(255)  | NOT NULL              | Image path                           |
+| quantity        | INT           | DEFAULT 0             | Beer quantity in stock               |
 
 ### Basic Database Schema for User Table
 
