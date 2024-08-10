@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
-const Beer = require('./model/beerSchema'); // Import the Beer model
+const Beer = require('./model/beerSchema'); 
+const User = require('./model/userSchema');
+const Category = require('./model/categorySchema');
+const bcrypt = require('bcrypt');
 
 // Connect to MongoDB
 const uri = "mongodb+srv://Sampreet:SharryKhinda@cluster0.ht9sfw9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(uri)
     .then(() => {
         console.log('Connected to MongoDB Atlas');
+        seedAdmin();
+        //seedCategories();
     })
     .catch(error => {
         console.error('Connection error', error);
@@ -59,7 +64,7 @@ const beers = [
 ];
 
 // Insert dummy data into the Beer collection
-Beer.insertMany(beers)
+/*Beer.insertMany(beers)
   .then(() => {
     console.log('Dummy data inserted successfully');
     mongoose.connection.close();
@@ -68,3 +73,64 @@ Beer.insertMany(beers)
     console.error('Error inserting dummy data:', err);
     mongoose.connection.close();
   });
+  */
+
+  // Insert admin to the db
+  async function seedAdmin() {
+    try {
+      const email = 'admin@admin.com'; // Change this to your desired admin email
+      const password = 'admin'; // Change this to your desired admin password
+      const isAdmin = true;
+  
+      // Check if the admin user already exists
+      const existingAdmin = await User.findOne({ email });
+  
+      if (existingAdmin) {
+        console.log('Admin user already exists');
+      } else {
+        // Create the admin user
+        const admin = new User({
+          email,
+          password: password,
+          isAdmin: isAdmin,
+        });
+
+        await admin.save();
+        console.log('Admin user created successfully');
+      }
+    } catch (err) {
+      console.error('Error seeding admin user', err);
+    } finally {
+      mongoose.connection.close();
+    }
+  }
+
+  const categories = [
+    { name: 'Lager' },
+    { name: 'Ale' },
+    { name: 'Stout' },
+    { name: 'Porter' },
+    { name: 'Pilsner' },
+    { name: 'Wheat' },
+    { name: 'Sour' },
+    { name: 'Other' }
+  ];
+  
+  // Seeding categories into the database
+  async function seedCategories() {
+    try {
+      // Check if categories already exist
+      const existingCategories = await Category.find();
+  
+      if (existingCategories.length > 0) {
+        console.log('Categories already exist');
+      } else {
+        await Category.insertMany(categories);
+        console.log('Categories seeded successfully');
+      }
+    } catch (err) {
+      console.error('Error seeding categories', err);
+    } finally {
+      mongoose.connection.close(); // Close the connection
+    }
+  }

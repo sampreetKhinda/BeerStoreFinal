@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Categories</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('header') %>
+  <main>
+  <div class="container mt-5">
+    <h1>Manage Categories</h1>
+    
+    <!-- Create New Category Form -->
+    <div class="mb-4">
+      <h2 class="text-black">Create New Category</h2>
+      <form action="/admin/categories/create" method="POST">
+        <div class="form-group">
+          <label class="text-black" for="categoryName">Category Name:</label>
+          <input type="text" class="form-control" id="categoryName" name="name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Category</button>
+      </form>
+    </div>
+    
+    <!-- List of Categories -->
+    <h2 class="text-black">Existing Categories</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% categories.forEach(category => { %>
+          <tr>
+            <td><%= category.name %></td>
+            <td>
+              <!-- Edit Form -->
+              <form action="/admin/categories/edit/<%= category._id %>" method="POST" style="display:inline;">
+                <input type="text" name="name" value="<%= category.name %>" required>
+                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+              </form>
+              
+              <!-- Delete Form -->
+              <form action="/admin/categories/delete/<%= category._id %>" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>
+  <%- include('footer') %>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

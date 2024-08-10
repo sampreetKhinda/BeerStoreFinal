@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Items</title>
+</head>
+<body>
+  <h1>Items</h1>
+  <a href="/admin/items/new">Add New Item</a>
+  <ul>
+    <% items.forEach(item => { %>
+      <li>
+        <%= item.name %> - <%= item.category.name %> - $<%= item.price %>
+        <a href="/admin/items/edit/<%= item._id %>">Edit</a>
+        <form action="/admin/items/delete/<%= item._id %>" method="POST" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>

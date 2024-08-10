@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Beer</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('header') %>
+  <main>
+  <div class="container mt-5">
+    <h1>Edit Beer</h1>
+    <form action="/admin/products/edit/<%= beer._id %>" method="POST">
+      <div class="form-group">
+        <label class="text-black" for="name">Name:</label>
+        <input type="text" class="form-control text-black" id="name" name="name" value="<%= beer.name %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="brand">Brand:</label>
+        <input type="text" class="form-control text-black" id="brand" name="brand" value="<%= beer.brand %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="type">Type:</label>
+        <select class="form-control text-black" id="type" name="type" required>
+          <% categories.forEach(category => { %>
+            <option value="<%= category.name %>" <%= beer.type === category.name ? 'selected' : '' %>><%= category.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="alcoholContent">Alcohol Content (%):</label>
+        <input type="number" step="0.1" class="form-control text-black" id="alcoholContent" name="alcoholContent" value="<%= beer.alcoholContent %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="price">Price ($):</label>
+        <input type="number" step="0.01" class="form-control text-black" id="price" name="price" value="<%= beer.price %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="description">Description:</label>
+        <textarea class="form-control text-black" id="description" name="description" rows="4" required><%= beer.description %></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="image">Image:</label>
+        <input type="text" class="form-control-file text-black" id="image" name="image" value="<%= beer.image %>" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="text-black" for="quantity">Quantity:</label>
+        <input type="number" class="form-control text-black" id="quantity" name="quantity" value="<%= beer.quantity %>" required>
+      </div>
+      
+      <button type="submit" class="add-to-cart-btn">Update Beer</button>
+      <button type="button" class="btn btn-secondary" onclick="window.location.href='/admin/dashboard'">Cancel</button>
+    </form>
+  </div>
+</main>
+  <%- include('footer') %>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.com/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

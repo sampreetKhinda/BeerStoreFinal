@@ -44,7 +44,7 @@ Make sure you have the following installed on your machine:
 
 ### Project setup
 1. ```bash
-    npm install express mongoose body-parser express-session ejs
+    npm install express mongoose body-parser express-session ejs bcrypt
     ```
 
 ### Basic Database Schema for Beer Table
@@ -66,13 +66,11 @@ Make sure you have the following installed on your machine:
 
 | Column Name | Data Type     | Constraints           | Description                          |
 |-------------|---------------|-----------------------|--------------------------------------|
-| id          | INT           | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each user    |
-| username    | VARCHAR(255)  | NOT NULL, UNIQUE      | Username of the user                |
-| password    | VARCHAR(255)  | NOT NULL              | Encripted password of the user         |
-| email       | VARCHAR(255)  | NOT NULL, UNIQUE      | Email address of the user           |
-| is_admin    | BOOLEAN       | DEFAULT FALSE         | Whether the user is an admin        |
-| created_at  | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP | Timestamp when the record was created |
-| updated_at  | TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | Timestamp when the record was last updated |
+| id          | INT           | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each user|
+| email       | VARCHAR(255)  | NOT NULL, UNIQUE      | Username of the user                 |
+| password    | VARCHAR(255)  | NOT NULL              | Encripted password of the user       |
+| is_admin    | BOOLEAN       | DEFAULT FALSE         | Whether the user is an admin         |
+|-------------|---------------|-----------------------|--------------------------------------|
 
 
 ### Installation
@@ -84,5 +82,3 @@ Make sure you have the following installed on your machine:
     cd beer-store-ecommerce
     ```
 
-npm 
-npm install express-session

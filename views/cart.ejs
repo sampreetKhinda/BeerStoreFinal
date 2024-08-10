@@ -47,6 +47,11 @@
         </table>
       </div>
     <% } %>
+    <div class="col-md-12 mt-3">
+      <form action="/checkout" method="get">
+          <button class="view-details-btn" type="submit" <%= cart.length === 0 ? 'disabled' : '' %>>Checkout</button>
+      </form>
+  </div>
   </main>
   <%- include('footer') %>
   <!-- Bootstrap JS and dependencies -->

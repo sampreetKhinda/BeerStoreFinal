@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const Beer = require('./model/beerSchema');
 const bodyParser = require('body-parser');
+const User = require('./model/userSchema');
+const Category = require('./model/categorySchema');
 
 app.use(bodyParser.json());
 
@@ -106,7 +108,8 @@ app.get('/', async (req, res) => {
       title: 'Beer Store',  
       beers: beers, 
       types: types, 
-      selectedType: type
+      selectedType: type,
+      user: req.session.user
     });
   } catch (err) {
     console.error(err);
@@ -115,13 +118,13 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-  const  hasItemsInCart = (req.session.cart && req.session.cart.length > 0);
-  res.render('about', { title: 'About' });
+  
+  res.render('about', { title: 'About',  user: req.session.user });
 });
 
 app.get('/contact', (req, res) => {
-  const  hasItemsInCart = (req.session.cart && req.session.cart.length > 0);
-  res.render('contact', { title: 'Contact' });
+  
+  res.render('contact', { title: 'Contact',  user: req.session.user });
 });
 
 app.post('/send-message', (req, res) => {
@@ -161,11 +164,11 @@ app.post('/cart/add/:id', async (req, res) => {
 app.get('/cart', (req, res) => {
   const  hasItemsInCart = (req.session.cart && req.session.cart.length > 0);
   const cart = req.session.cart || [];
-  res.render('cart', { cart,  hasItemsInCart });
+  res.render('cart', { cart,  user: req.session.user,  hasItemsInCart });
 });
 
 app.post('/cart/update/:id', (req, res) => {
-  const  hasItemsInCart = (req.session.cart && req.session.cart.length > 0);
+
   try {
     const beerId = req.params.id;
     const { quantity } = req.body;
@@ -184,7 +187,6 @@ app.post('/cart/update/:id', (req, res) => {
 });
 
 app.post('/cart/remove/:id', (req, res) => {
-  const  hasItemsInCart = (req.session.cart && req.session.cart.length > 0);
   try {
     const beerId = req.params.id;
 
@@ -196,19 +198,252 @@ app.post('/cart/remove/:id', (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+// Admin login route
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log('User not found');
+      return res.status(401).render('login', { error: 'Invalid email or password',  user: req.session.user });
+    }
+
+    const isMatch =  password === user.password;
+
+    if (!isMatch) {
+      console.log('Password does not match');
+      return res.status(401).render('login', { error: 'Invalid email or password',  user: req.session.user });
+    }
+    req.session.user = user;
+    req.session.isAdmin = user.isAdmin; // Set session flag for admin access
+    console.log('Login successful');
+    res.redirect('/admin/dashboard');
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// Admin dashboard route
+app.get('/admin/dashboard', async (req, res) => {
+  if (req.session.isAdmin) {
+    res.render('dashboard', {user: req.session.user});
+  } else {
+    res.render('login', { user: req.session.user});
+  }
+});
+
+// Logout route
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/login');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login', { user: req.session.user});
+});
+
+/*app.post('/login', async(req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(401).render('login', { error: 'Invalid email or password' });
+  }
+
+  const isMatch = await user.comparePassword(password);
+
+  if (!isMatch) {
+    return res.status(401).render('login', { error: 'Invalid email or password' });
+  }
+
+  req.session.user = user;
+  res.redirect('/');
+});*/
+
+app.get('/checkout', (req, res) => {
+  const cart = req.session.cart || [];
+
+  res.render('checkout', {
+    cart,
+    user: req.session.user
+  });
+});
+
+app.post('/order-summary', (req, res) => {
+  const { name, email, address, city, state, zip } = req.body;
+  const cart = req.session.cart || [];
+
+  res.render('order-summary', {
+    name,
+    email,
+    address,
+    city,
+    state,
+    zip,
+    cart,
+    user: req.session.user
+  });
+});
+
+app.post('/order-confirmation', (req, res) => {
+  req.session.cart = [];
+  res.redirect('/');
+});
 
 // Get beer details
 app.get('/:id', async (req, res) => {
-  const  hasItemsInCart = (req.session.cart && req.session.cart.length > 0);
   try {
     const beer = await Beer.findById(req.params.id);
     if (!beer) {
       return res.status(404).json({ message: 'Beer not found' });
     }
-    res.render('beer-detail', { beer });
+    res.render('beer-detail', { beer,  user: req.session.user });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
+  }
+});
+
+
+app.get('/admin/products', async (req, res) => {
+  try {
+    const items = await Beer.find().populate('category');
+    res.render('products', { items ,  user: req.session.user});
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
+});
+
+app.get('/admin/product/create', async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.render('new-product', {categories,  user: req.session.user});
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
+});
+
+app.post('/admin/products/create', async (req, res) => {
+  try {
+    console.log("-->"+req.body.name)
+    const item = new Beer({
+      name: req.body.name,
+      brand: req.body.brand,
+      type: req.body.type,
+      alcoholContent: req.body.alcoholContent,
+      price: req.body.price,
+      description: req.body.description,
+      image: req.file ? `/uploads/${req.file.filename}` : '',
+      quantity: req.body.quantity,
+      inStock: req.body.quantity > 0,
+    });
+    await item.save();
+    res.redirect('/');
+  } catch (error) {
+    console.log("error ->"+error);
+    res.status(400).send('Error creating item');
+  }
+});
+
+app.get('/admin/product/edit/:id', async (req, res) => {
+  try {
+    const beer = await Beer.findById(req.params.id);
+    const categories = await Category.find();
+    if (!beer) {
+      return res.status(404).send('product not found');
+    }
+    res.render('edit-product', { beer, categories,  user: req.session.user });
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
+});
+
+app.post('/admin/products/edit/:id', async (req, res) => {
+  try {
+   
+    const result = await Beer.findByIdAndUpdate(req.params.id, {name: req.body.name,
+      type: req.body.type,
+      alcoholContent: req.body.alcoholContent,
+      price: req.body.price,
+      description: req.body.description,
+      image: req.body.image,
+      quantity : req.body.quantity}, { new: true, runValidators: true });
+
+    if (!result) {
+      return res.status(404).send('Item not found');
+    }
+
+    res.redirect('/admin/dashboard');
+  } catch (error) {
+    console.log("error->"+error);
+    res.status(400).send('Error updating item');
+  }
+});
+
+app.post('/admin/product/delete/:id', async (req, res) => {
+  try {
+    await Beer.findByIdAndDelete(req.params.id);
+    res.redirect('/admin/dashboard');
+  } catch (error) {
+    console.log("error->"+error);
+    res.status(400).send('Error deleting item');
+  }
+});
+
+app.get('/admin/manage-category', async(req,res) =>{
+  const categories = await Category.find();
+  res.render('manage-category',{categories, user: req.session.user});
+});
+
+app.get('/admin/manage-products', async(req,res) =>{
+  const items = await Beer.find();
+  res.render('manage-products',{items, user: req.session.user});
+});
+
+// Create a new category
+app.post('/admin/categories/create', async (req, res) => {
+  try {
+    const category = new Category({ name: req.body.name });
+    await category.save();
+    res.redirect('/admin/manage-category');
+  } catch (error) {
+    console.error('Error creating category:', error);
+    res.status(500).send('Error creating category');
+  }
+});
+
+// Get all categories
+app.get('/admin/categories', async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).send('Error fetching categories');
+  }
+});
+
+// Edit a category
+app.post('/admin/categories/edit/:id', async (req, res) => {
+  try {
+    await Category.findByIdAndUpdate(req.params.id, { name: req.body.name });
+    res.redirect('/admin/manage-category');
+  } catch (error) {
+    console.error('Error updating category:', error);
+    res.status(500).send('Error updating category');
+  }
+});
+
+// Delete a category
+app.post('/admin/categories/delete/:id', async (req, res) => {
+  try {
+    await Category.findByIdAndDelete(req.params.id);
+    res.redirect('/admin/manage-category');
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    res.status(500).send('Error deleting category');
   }
 });
 
